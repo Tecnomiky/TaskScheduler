@@ -1,6 +1,3 @@
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 from subprocess import Popen
 import time
 import argparse
@@ -18,7 +15,6 @@ def is_moment(period_and_command):
 
 
 if __name__ == '__main__':
-    text = """0 0 * * * /home/michele/Documents/backup_linux.sh"""
 
     parser = argparse.ArgumentParser(description="Task scheduler")
     parser.add_argument("config_file", type=str, help="Config file")
@@ -28,7 +24,6 @@ if __name__ == '__main__':
     config_file = open(args.config_file, 'r')
 
     while True:
-#        for line in iter(text.splitlines()):
         for line in config_file.readlines():
             period_and_exe = Config.process_config_line(line)
             command = period_and_exe["command"].split()
@@ -40,6 +35,4 @@ if __name__ == '__main__':
                       stderr=None, close_fds=True)
         time.sleep(45)
 
-
-#    Popen(["C:\\Program Files\\LibreOffice\\program\\swriter.exe", "D:\\Users\\Michele\\Downloads\\GIORGIO Cover Letter.odt"], shell=True,stdin=None, stdout=None, stderr=None, close_fds=True)
 

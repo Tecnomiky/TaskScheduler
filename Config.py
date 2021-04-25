@@ -182,13 +182,17 @@ def get_period_and_command(cron_expression):
     :param cron_expression: The cron list
     :return: Cron dictionary
     """
+    command = ""
+    for i in range(5, len(cron_expression)):
+        command += cron_expression[i] + " "
+
     period_and_command = {
         "minute": process_minute(cron_expression[0]),
         "hour": process_hour(cron_expression[1]),
         "day_of_month": process_day_month(cron_expression[2]),
         "month": process_month(cron_expression[3]),
         "day_of_week": process_day_week(cron_expression[4]),
-        "command": cron_expression[5]
+        "command": command
     }
 
     return period_and_command
