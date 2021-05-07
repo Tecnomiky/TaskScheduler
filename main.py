@@ -58,6 +58,6 @@ if __name__ == '__main__':
             if is_moment(period_and_exe):
                 print("execute "+period_and_exe["command"])
                 Popen(command, shell=True, stdin=None, stdout=None, stderr=None, close_fds=True)
-        time.sleep(40)
+        time.sleep(50)
 
 
