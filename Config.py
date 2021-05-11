@@ -195,7 +195,10 @@ def process_day_week(day_week):
     return days_week
 
 
-def get_period_and_command(cron_expression):
+index = 1
+
+
+def get_period_and_command(cron_expression, index):
     """
     Create a cron dictionary from the list
     :param cron_expression: The cron list
@@ -205,7 +208,9 @@ def get_period_and_command(cron_expression):
     for i in range(5, len(cron_expression)):
         command += cron_expression[i] + " "
 
+#    global index
     period_and_command = {
+        "id": index,
         "minute": process_minute(cron_expression[0]),
         "hour": process_hour(cron_expression[1]),
         "day_of_month": process_day_month(cron_expression[2]),
@@ -213,15 +218,16 @@ def get_period_and_command(cron_expression):
         "day_of_week": process_day_week(cron_expression[4]),
         "command": command
     }
+    index += 1
 
     return period_and_command
 
 
-def process_config_line(line):
+def process_config_line(line, index):
     """
     Process the config line for get a cron dictionary
     :param line: The config line
     :return: The cron dictionary
     """
-    return get_period_and_command(get_cron_expression(line))
+    return get_period_and_command(get_cron_expression(line), index)
 
