@@ -23,7 +23,6 @@ import argparse
 
 import Config
 import Datetime
-import Process
 
 running_tasks = []
 
@@ -41,42 +40,31 @@ def is_moment(period_and_command):
            (Datetime.get_day_week() in period_and_command["day_of_week"])
 
 
-#def check_whether_to_run_the_task(period_and_command):
-#    global running_tasks
-
-#    if len(running_tasks) == 0:
-#        command = [period_and_exe["command"]]
-#        proc = Popen(command, shell=True, stdin=None, stdout=None, stderr=None, close_fds=True)
-#        running_tasks.append({"id": period_and_command["id"], "pid": proc.pid})
-#    elif
-
-
 def check_whether_to_run_the_task(period_and_command):
     global running_tasks
 
-    command = [period_and_command["command"]]
     if len(running_tasks) == 0:
-        print("len == 0")
-        Popen(command, shell=True, stdin=None, stdout=None, stderr=None, close_fds=True)
-        running_tasks.append({"id": period_and_command["id"], "minute": period_and_command["minute"],
-                              "hour": period_and_command["hour"]})
+        run_task(period_and_command)
+
     else:
         for running_task in running_tasks:
-            if (Datetime.get_minute() not in running_task["minute"]) and (Datetime.get_hour() in running_task["hour"]):
-                print("else if")
-                if running_task["id"] != period_and_command["id"]:
-                    print("else if if")
-                    Popen(command, shell=True, stdin=None, stdout=None, stderr=None, close_fds=True)
-                    task = {"id": period_and_command["id"], "minute": period_and_command["minute"],
-                                          "hour": period_and_command["hour"]}
-                    running_tasks.append(task)
+            if (Datetime.get_minute() not in running_task["minute"]) and (Datetime.get_hour() in running_task["hour"]) \
+                    and running_task["id"] != period_and_command["id"]:
 
-#    for i in range(0, len(running_tasks.copy())):
-#        if (Datetime.get_minute() > running_tasks[i]["minute"][0]) and (Datetime.get_hour() >= running_tasks[i]["hour"][0]):
-#            del running_tasks[i]
+                run_task(period_and_command)
 
         running_tasks = [task for task in running_tasks if (Datetime.get_minute() > task["minute"][0]) and
-                         (Datetime.get_hour() >= task["hour"][0]) ]
+                         (Datetime.get_hour() >= task["hour"][0])]
+
+
+def run_task(period_and_command):
+    global running_tasks
+
+    command = [period_and_command["command"]]
+    Popen(command, shell=True, stdin=None, stdout=None, stderr=None, close_fds=True)
+    task = {"id": period_and_command["id"], "minute": period_and_command["minute"],
+            "hour": period_and_command["hour"]}
+    running_tasks.append(task)
 
 
 if __name__ == '__main__':
