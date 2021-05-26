@@ -43,3 +43,7 @@ def get_month():
 def get_day_week():
     datetime_object = datetime.now()
     return datetime_object.weekday()
+
+
+def get_now():
+    return datetime.now()

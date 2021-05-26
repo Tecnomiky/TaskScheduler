@@ -18,6 +18,7 @@ You should have received a copy of the GNU General Public License
 along with TaskScheduler.  If not, see <https://www.gnu.org/licenses/>.
 """
 import sys
+import shlex
 
 
 def get_cron_expression(text):
@@ -25,7 +26,8 @@ def get_cron_expression(text):
     Create a list from the string using as a separator the space.
     The split method default use space as separator
     """
-    cron_statement = text.split()
+#    cron_statement = text.split()
+    cron_statement = shlex.split(text)
 
     return cron_statement
 
@@ -207,6 +209,7 @@ def get_period_and_command(cron_expression, index):
     command = ""
     for i in range(5, len(cron_expression)):
         command += cron_expression[i] + " "
+    command = cron_expression[5:]
 
 #    global index
     period_and_command = {
