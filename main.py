@@ -49,18 +49,17 @@ def check_whether_to_run_the_task(period_and_command):
     else:
         for running_task in running_tasks:
             now = Datetime.get_now()
-            if (Datetime.get_minute() != running_task["datetime"].minute) and \
-                    (Datetime.get_hour() != running_task["datetime"].hour) and \
-                    (running_task["id"] != period_and_command["id"]):
+            if (running_task["datetime"] != now) and (running_task["id"] != period_and_command["id"]):
 
                 run_task(period_and_command)
 
-                running_tasks = [running_task for running_task in running_tasks if (now > running_task["datetime"])]
+                running_tasks = [running_task for running_task in running_tasks if (now == running_task["datetime"])]
 
 
 def run_task(period_and_command):
     global running_tasks
 
+    print("execute " + str(period_and_command["id"]) + " " + str(period_and_command["command"]))
     cmd = period_and_command["command"]
     Popen(cmd, shell=False, stdin=None, stdout=None, stderr=None, close_fds=True)
     task = {"id": period_and_command["id"], "minute": period_and_command["minute"],
@@ -88,7 +87,7 @@ if __name__ == '__main__':
             if args.verbose:
                 print(period_and_exe)
             if is_moment(period_and_exe):
-                print("execute " + str(period_and_exe["id"]) + " " + str(period_and_exe["command"]))
+#                print("execute " + str(period_and_exe["id"]) + " " + str(period_and_exe["command"]))
                 check_whether_to_run_the_task(period_and_exe)
             index += 1
         time.sleep(50)

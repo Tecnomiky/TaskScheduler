@@ -46,4 +46,4 @@ def get_day_week():
 
 
 def get_now():
-    return datetime.now()
+    return datetime.now().replace(second=0, microsecond=0)
