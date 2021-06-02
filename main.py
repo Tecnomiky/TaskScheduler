@@ -72,7 +72,7 @@ if __name__ == '__main__':
     "Code for the console interface"
     parser = argparse.ArgumentParser(description=textwrap.dedent('''Task scheduler
 TaskScheduler is a task scheduler software, wrote in Python, that use cron linux standard for the config file
-The comments in the config file are accepted and it have to begin with a #
+The comments in the config file are accepted and it has to begin with a #
 '''), formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("config_file", type=str, help="Config file in the cron Linux standard")
     parser.add_argument("-v", "--verbose", help="Return a verbose output", action="store_true")
