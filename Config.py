@@ -26,7 +26,6 @@ def get_cron_expression(text):
     Create a list from the string using as a separator the space.
     The split method default use space as separator
     """
-#    cron_statement = text.split()
     cron_statement = shlex.split(text)
 
     return cron_statement

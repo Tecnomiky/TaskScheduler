@@ -17,6 +17,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with TaskScheduler.  If not, see <https://www.gnu.org/licenses/>.
 """
+import textwrap
 from subprocess import Popen
 import time
 import argparse
@@ -50,7 +51,6 @@ def check_whether_to_run_the_task(period_and_command):
         for running_task in running_tasks:
             now = Datetime.get_now()
             if (running_task["datetime"] != now) and (running_task["id"] != period_and_command["id"]):
-
                 run_task(period_and_command)
 
                 running_tasks = [running_task for running_task in running_tasks if (now == running_task["datetime"])]
@@ -70,7 +70,10 @@ def run_task(period_and_command):
 
 if __name__ == '__main__':
     "Code for the console interface"
-    parser = argparse.ArgumentParser(description="Task scheduler")
+    parser = argparse.ArgumentParser(description=textwrap.dedent('''Task scheduler
+TaskScheduler is a task scheduler software, wrote in Python, that use cron linux standard for the config file
+The comments in the config file are accepted and it have to begin with a #
+'''), formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("config_file", type=str, help="Config file in the cron Linux standard")
     parser.add_argument("-v", "--verbose", help="Return a verbose output", action="store_true")
     args = parser.parse_args()
@@ -82,12 +85,13 @@ if __name__ == '__main__':
     while True:
         index = 1
         for line in list_config:
-            period_and_exe = Config.process_config_line(line, index)
-            command = [period_and_exe["command"]]
-            if args.verbose:
-                print(period_and_exe)
-            if is_moment(period_and_exe):
-#                print("execute " + str(period_and_exe["id"]) + " " + str(period_and_exe["command"]))
-                check_whether_to_run_the_task(period_and_exe)
-            index += 1
+            if not line.strip().startswith("#"):
+                period_and_exe = Config.process_config_line(line, index)
+                command = [period_and_exe["command"]]
+                if args.verbose:
+                    print(period_and_exe)
+                if is_moment(period_and_exe):
+                    # print("execute " + str(period_and_exe["id"]) + " " + str(period_and_exe["command"]))
+                    check_whether_to_run_the_task(period_and_exe)
+                index += 1
         time.sleep(50)
